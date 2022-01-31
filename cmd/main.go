@@ -23,15 +23,17 @@ func main() {
 	if err != nil {
 		return
 	}
-	dynamoClient := dynamodb.New(awsSession)
+	dynamoClient = dynamodb.New(awsSession)
 	lambda.Start(handler)
 }
 
-const tableName = "LambdaInGoUser"
+const tableName = "nft-scrapper-serverless"
 
 func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
 	switch req.HTTPMethod {
 	case "GET":
-		return handlers.GetUser(req, tableName, dynamoClient)
+		return handlers.GetProjects(req, tableName, dynamoClient)
+	default:
+		return handlers.UnhandledMethod()
 	}
 }
